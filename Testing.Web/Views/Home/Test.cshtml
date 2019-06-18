@@ -1,0 +1,114 @@
+﻿@*
+@model IEnumerable<Testing.Domain.Entitys.Test>
+@using Complexity = Testing.Domain.Entitys.Сomplexity
+
+@{
+    ViewBag.Title = "Test";
+
+}
+
+@using (Html.BeginForm("Submit", "Home", FormMethod.Post, new { @name = "Form1" }))
+{
+    @Html.DropDownList("Subject",
+        ViewBag.Subject as SelectList,
+        TempData["Message"] == null ? "Выберите предмет..." : "Выбранный предмет - " +  TempData["Message"].ToString(),
+        new { @class = "form-control", @id = "ddl" })
+    //@Html.DropDownList("Сomplexity", ViewBag.Сomplexity as SelectList, "Виберите уровень...", new { @class = "form-control", @id = "ddl" })
+}
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    $("body").on("change", "#ddl", function () {
+        $("#ddlSub").val($(this).find("option:selected").text());
+        document.forms["Form1"].submit();
+    });
+</script>
+
+
+    @if (TempData["Message"] != null)
+    {
+        <script type="text/javascript">
+                $(function () {
+                    alert("@TempData["Message"]");
+                });
+        </script>
+    }
+
+
+<h2>Test</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Subject)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TimeToGo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CountQuestions)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.СomplexityId)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Subject)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeToGo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CountQuestions)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.СomplexityId)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>
+*@
+
+
+@model Testing.Web.Models.TestsViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+<form class="form-inline">
+    <label>Выберите предмет:</label>
+    <select name="subjectId" class="form-control">
+        @foreach (Testing.Domain.Entitys.Сomplexity comp in Model.Сomplexity)
+        {
+            <option value="@comp.Id">@comp.Complication</option>
+        }
+    </select>
+    <input type="submit" />
+</form>
+
+<br />
+<table class="table">
+    @foreach (Testing.Domain.Entitys.Test p in Model.Test)
+    {
+        <tr>
+            <td>@p.Subject</td>
+            <td>@p.TimeToGo</td>
+            <td>@p.CountQuestions</td>
+            <td>@p.Сomplexity.Complication</td>
+        </tr>
+    }
+</table>

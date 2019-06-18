@@ -99,13 +99,31 @@
     <Compile Include="Config\IdentityConfig.cs" />
     <Compile Include="Entitys\AccountViewModels.cs" />
     <Compile Include="Entitys\AppDbInitializer.cs" />
+    <Compile Include="Entitys\BaseEntity.cs" />
     <Compile Include="Entitys\IdentityModels.cs" />
     <Compile Include="Entitys\ManageViewModels.cs" />
+    <Compile Include="Migrations\201906181234230_InitialCreate.cs" />
+    <Compile Include="Migrations\201906181234230_InitialCreate.Designer.cs">
+      <DependentUpon>201906181234230_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906181323260_softDelete.cs" />
+    <Compile Include="Migrations\201906181323260_softDelete.Designer.cs">
+      <DependentUpon>201906181323260_softDelete.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201906181234230_InitialCreate.resx">
+      <DependentUpon>201906181234230_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906181323260_softDelete.resx">
+      <DependentUpon>201906181323260_softDelete.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

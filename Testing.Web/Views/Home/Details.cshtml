@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Testing.Domain.Entitys.Question>
+@using Answer = Testing.Domain.Entitys.Answer
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+@foreach (var item in Model) {
+    <div>
+        <p>@Html.Label(item.UserQuestion + " ?", new { qid = item.Id })</p>
+        @foreach (Answer a in (ICollection<Answer>)item.Answers)
+        {
+            if (item.Id == a.QuestionId)
+            {
+                <p>@Html.RadioButton(item.Id.ToString(), a.UserAnswer, new {aid = a.Id }) @a.UserAnswer</p>
+            }
+        }
+    </div>
+}

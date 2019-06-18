@@ -1,0 +1,10 @@
+﻿@model IEnumerable<Testing.Domain.Entitys.Test>
+
+<div id="searchresults">
+        <ul>
+        @foreach (var item in Model)
+        { 
+            <li>@item.Subject</li>
+        }
+    </ul>
+</div>

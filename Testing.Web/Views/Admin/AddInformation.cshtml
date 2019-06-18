@@ -1,0 +1,118 @@
+﻿@model Testing.Domain.Entitys.Test
+@{
+    ViewBag.Title = "Вопросы к тесту";
+}
+<h2>Тест: @Model.Subject</h2>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Subject)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Subject)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Сomplexity.Complication)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Сomplexity.Complication)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TimeToGo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TimeToGo) (мин)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CountQuestions)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CountQuestions)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+    </dl>
+</div>
+
+@using (Ajax.BeginForm("AddQuestion", new AjaxOptions { UpdateTargetId = "results", OnSuccess = "OnSuccess" }))
+{
+    <div class="QuestionBlock">
+        <label>Вопрос</label>
+        <input type="text" name="name" class="form-control text-box single-line" required />
+    </div>
+    <div id="answersBlock">
+        <div class="answerItem">
+            <h5>Ответ № 1</h5>
+            <div>
+                <input type="text" name="answers" id="answers" class="form-control text-box single-line" required />
+                <input type="checkbox" onClick="document.getElementById('ans_1').value = this.checked ? 1 : 0;"> Правильный?
+                <input type="hidden" name="ans" id="ans_1" value="0">
+            </div>
+        </div>
+    </div>
+
+    <br />
+    <p><a id="addLink">Добавить ответ</a></p>
+    <input id="test" type="submit" value="Добавить вопрос" class="btn btn-primary" />
+    <input type="text" name="idtest" value="@Model.Id" hidden />
+}
+
+<div id="results"></div>
+
+<p>
+    @Html.ActionLink("Назад к тестам", "Tests")
+</p>
+
+@Scripts.Render("~/scripts/jquery-3.3.1.min.js")
+@Scripts.Render("~/scripts/jquery.unobtrusive-ajax.min.js")
+
+@section Scripts {
+    <script>
+        $(function () {
+            var i = 0;
+            $('#addLink').bind("click", function () {
+                i++;
+                var html2Add =
+                    "<div class='answerItem'>" +
+                    "<h5>Ответ № " + (i + 1) + "</h5>" +
+                    "<div>" +
+                    "<input type='text' name='answers' id='answers' class='form-control text-box single-line' required />" +
+                    "<input type='checkbox' onClick='document.getElementById('ans_" + i + "').value = this.checked ? 1 : 0;'> Правильный?" +
+                    "<input type='hidden' name='ans' id='ans_" + i + "' value='0'>" +
+                "</div> " +
+                    "</div>";
+                $('#answersBlock').append(html2Add);
+            })
+        });
+
+        function OnSuccess() {
+            alert("Записи в БД были добавлены!");
+            $('#form0').empty();
+            $("#form0").html(`
+                <div class="QuestionBlock">
+                    <label>Вопрос</label>
+                    <input type="text" name="name" class="form-control text-box single-line" required />
+                </div>
+                <div id="answersBlock">
+                    <div class="answerItem">
+                        <h5>Ответ № 1</h5>
+                        <div>
+                            <input type="text" name="answers" id="answers" class="form-control text-box single-line" required />
+                            <input type="checkbox" onClick="document.getElementById('ans_1').value = this.checked ? 1 : 0;"> Правильный?
+                            <input type="hidden" name="ans" id="ans_1" value="0">
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+                <p><a id="addLink">Добавить ответ</a></p>
+                <input id="test" type="submit" value="Добавить вопрос" class="btn btn-primary" />
+                <input type="text" name="idtest" value="@Model.Id" hidden />`);
+        }
+    </script>
+}

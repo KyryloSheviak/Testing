@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Testing.Domain.Entitys;
+using Testing.Web.Models;
 
 namespace Testing.Web.Controllers
 {
@@ -13,20 +15,77 @@ namespace Testing.Web.Controllers
             return View();
         }
 
-        [Authorize(Roles = "admin")]
-        public ActionResult About()
+        public ActionResult Test()
         {
-            ViewBag.Message = "Your application description page.";
+            ApplicationDbContext context = new ApplicationDbContext();
+            var r = context.Tests;
 
-            return View();
+            List<Сomplexity> compModels =
+                context
+                .Сomplexitys
+                // .OrderBy(o => o.Complication)
+                .Distinct()
+                .ToList();
+            compModels.Insert(0, new Сomplexity { Id = 0, Complication = "Все..." });
+
+            /*
+            // формируем список компаний для передачи в представление
+            List<Сomplexity> compModels = 
+                context
+                .Сomplexitys
+                .Select(c => new Сomplexity { Id = c.Id, Complication = c.Complication })
+                .ToList();
+            // добавляем на первое место
+            */
+            TestsViewModel ivm = new TestsViewModel
+            {
+                Сomplexity = compModels, Test = r
+            };
+
+            return View(ivm);
         }
 
-        [Authorize(Roles = "user")]
-        public ActionResult Contact()
+        public ActionResult Details(int? id)
         {
-            ViewBag.Message = "Your contact page.";
+            if (id == null)
+                return HttpNotFound();
 
-            return View();
+            ApplicationDbContext context = new ApplicationDbContext();
+            var c = context.Questions.Where(o => o.TestId == id);
+            return View(c);
+        }
+
+        [HttpPost]
+        public ActionResult Submit(FormCollection formcollection)
+        {
+            string sub = formcollection["Subject"];
+            TempData["Message"] = sub;
+            ApplicationDbContext context = new ApplicationDbContext();
+            var c = context.Tests.Where(cc => cc.Subject == sub);
+
+            // предметы
+            SelectList subject = new SelectList(
+                context
+                .Tests
+                 //.OrderBy(o => o.Subject)
+                .Select(p => p.Subject)
+                .Distinct()
+                .ToList()
+            );
+            ViewBag.Subject = subject;
+
+            // сложность
+            SelectList complexity = new SelectList(
+                context
+                .Сomplexitys
+               // .OrderBy(o => o.Complication)
+                .Select(p => p.Complication)
+                .Distinct()
+                .ToList()
+            );
+            ViewBag.Сomplexity = complexity;
+
+            return View("Test", c);
         }
     }
 }

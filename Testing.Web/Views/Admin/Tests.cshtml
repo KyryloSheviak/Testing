@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Testing.Domain.Entitys.Test>
+
+@{
+    ViewBag.Title = "Перечень тестов в системе";
+}
+
+<h2>Перечень тестов с системе</h2>
+
+<p>
+    @Html.ActionLink("Добавить тест", "Create", new { @class = "btn btn-danger" })
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Subject)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Сomplexity.Complication)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TimeToGo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CountQuestions)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Subject)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Сomplexity.Complication)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TimeToGo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CountQuestions)
+        </td>
+        <td>
+            @Html.ActionLink("Редактировать", "Edit", new { id = item.Id }, new { @class = "btn btn-info" })
+            @Html.ActionLink("Удалить", "DeleteTest", new { id = item.Id }, new { @class = "btn btn-danger" })
+        </td>
+    </tr>
+}
+
+</table>
