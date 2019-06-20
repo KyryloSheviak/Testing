@@ -35,7 +35,6 @@ namespace Testing.Domain.Entitys
 
             // ======================================================
 
-
             var complexity = new List<Сomplexity>
             {
                 new Сomplexity { Complication = "базовый" },
@@ -89,17 +88,20 @@ namespace Testing.Domain.Entitys
                 new Question { TestId = 1, UserQuestion = "5*2" },
                 new Question { TestId = 1, UserQuestion = "5+8" },
                 // второй тест
+                /*
                 new Question { TestId = 2, UserQuestion = "2*2+2" },
                 new Question { TestId = 2, UserQuestion = "3+3-0" },
                 new Question { TestId = 2, UserQuestion = "2/2*2" },
                 new Question { TestId = 2, UserQuestion = "5*2+1" },
                 new Question { TestId = 2, UserQuestion = "5+8*2" },
+                */
             };
             questions.ForEach(t => context.Questions.Add(t));
             context.SaveChanges();
 
             var answers = new List<Answer>
             {
+                // ответы только по первому тесту
                 new Answer { QuestionId = 1, UserAnswer = "4", IsCorrect = true },
                 new Answer { QuestionId = 1, UserAnswer = "5", IsCorrect = false },
                 new Answer { QuestionId = 2, UserAnswer = "6", IsCorrect = true },

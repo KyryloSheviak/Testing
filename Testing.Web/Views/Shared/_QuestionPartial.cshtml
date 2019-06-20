@@ -1,0 +1,23 @@
+﻿@model Testing.Domain.Entitys.Question
+
+<div id="questions">
+    <h4>Вопрос:&nbsp;</h4>
+    <h4>@ViewBag.Num</h4>
+    <h4>&nbsp;/&nbsp;</h4>
+    <h4 name="countQuestion">@ViewBag.CountQuestion</h4>
+</div>
+
+<input type="hidden" name="idtest" value="@Model.TestId" />
+<input type="hidden" name="idquest" value="@Model.Id" />
+<input type="hidden" name="num" value="@ViewBag.Num" />
+
+<h3>@Model.UserQuestion</h3>
+@foreach (var item in Model.Answers)
+{
+    <div>
+        <input type="checkbox" value="@item.Id" name="idans">
+        <label>@item.UserAnswer</label>
+    </div>
+}
+ <br />
+<input type="submit" class="btn btn-success" />

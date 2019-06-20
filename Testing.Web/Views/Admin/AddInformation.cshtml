@@ -7,6 +7,12 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.Subject)
         </dt>
         <dd>
@@ -28,42 +34,44 @@
             @Html.DisplayNameFor(model => model.CountQuestions)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.CountQuestions)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Id)
+            <div id="results">
+                @Html.DisplayFor(model => model.CountQuestions)
+            </div>
         </dd>
     </dl>
 </div>
 
-@using (Ajax.BeginForm("AddQuestion", new AjaxOptions { UpdateTargetId = "results", OnSuccess = "OnSuccess" }))
-{
-    <div class="QuestionBlock">
-        <label>Вопрос</label>
-        <input type="text" name="name" class="form-control text-box single-line" required />
-    </div>
-    <div id="answersBlock">
-        <div class="answerItem">
-            <h5>Ответ № 1</h5>
-            <div>
-                <input type="text" name="answers" id="answers" class="form-control text-box single-line" required />
-                <input type="checkbox" onClick="document.getElementById('ans_1').value = this.checked ? 1 : 0;"> Правильный?
-                <input type="hidden" name="ans" id="ans_1" value="0">
+
+<div class="row">
+    <div class="col-md-6">
+        @using (Ajax.BeginForm("AddQuestion", new AjaxOptions { UpdateTargetId = "results", OnSuccess = "OnSuccess" }))
+        {
+            <div class="QuestionBlock">
+                <label>Вопрос</label>
+                <input type="text" name="name" class="form-control text-box single-line" required />
+                <hr />
             </div>
-        </div>
+            <div id="answersBlock">
+                <div class="answerItem">
+                    <h5>Ответ № 1</h5>
+                    <div>
+                        <input type="text" name="answers" id="answers" class="form-control text-box single-line" required />
+                        <input type="checkbox" onClick="document.getElementById('ans_1').value = this.checked ? 1 : 0;"> Правильный?
+                        <input type="hidden" name="ans" id="ans_1" value="0">
+                    </div>
+                </div>
+            </div>
+            <br />
+            <input id="test" type="submit" value="Добавить вопрос" class="btn btn-primary" />
+            <input type="text" name="idtest" value="@Model.Id" hidden />
+        }
     </div>
+    <div class="col-md-2">
+        <button id="addLink" class="btn btn-success">Добавить ответ</button>
+    </div>
+</div>
 
-    <br />
-    <p><a id="addLink">Добавить ответ</a></p>
-    <input id="test" type="submit" value="Добавить вопрос" class="btn btn-primary" />
-    <input type="text" name="idtest" value="@Model.Id" hidden />
-}
-
-<div id="results"></div>
-
+<br />
 <p>
     @Html.ActionLink("Назад к тестам", "Tests")
 </p>
@@ -75,7 +83,7 @@
     <script>
         $(function () {
             var i = 0;
-            $('#addLink').bind("click", function () {
+            $('#addLink').on("click", function () {
                 i++;
                 var html2Add =
                     "<div class='answerItem'>" +
@@ -108,9 +116,7 @@
                         </div>
                     </div>
                 </div>
-
                 <br />
-                <p><a id="addLink">Добавить ответ</a></p>
                 <input id="test" type="submit" value="Добавить вопрос" class="btn btn-primary" />
                 <input type="text" name="idtest" value="@Model.Id" hidden />`);
         }

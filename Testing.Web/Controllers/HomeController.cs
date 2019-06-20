@@ -18,7 +18,7 @@ namespace Testing.Web.Controllers
         public ActionResult Test()
         {
             ApplicationDbContext context = new ApplicationDbContext();
-            var r = context.Tests;
+            var r = context.Tests; //.Where(p => p.Subject == "Математика");
 
             List<Сomplexity> compModels =
                 context
@@ -37,7 +37,7 @@ namespace Testing.Web.Controllers
                 .ToList();
             // добавляем на первое место
             */
-            TestsViewModel ivm = new TestsViewModel
+            _TestsViewModel ivm = new _TestsViewModel
             {
                 Сomplexity = compModels, Test = r
             };

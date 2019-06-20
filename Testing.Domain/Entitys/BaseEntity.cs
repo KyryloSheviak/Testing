@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Testing.Domain.Entitys
 {
@@ -18,8 +19,12 @@ namespace Testing.Domain.Entitys
 
         [Display(Name = "Кол-во вопросов")]
         public int CountQuestions { get; set; } // количество вопросов
+
         public bool isDelete { get; set; }
+
+        [Display(Name = "Сложность")]
         public int СomplexityId { get; set; }
+
         public virtual Сomplexity Сomplexity { get; set; }
         public virtual ICollection<Question> Questions { get; set; }
     }
@@ -52,16 +57,18 @@ namespace Testing.Domain.Entitys
 
     public class AnswersUsers : BaseEntity
     {
-        public virtual ApplicationUser ApplicationUser { get; set; }
+        public string ApplicationUserId { get; set; }
 
-        public virtual Test Test { get; set; }
+        public int TestId { get; set; }
 
-        public virtual Question Question { get; set; }
+        public int QuestionId { get; set; }
 
-        public virtual Answer Answer { get; set; }
-
-        public string AnswerUser { get; set; }
+        public int AnswerId { get; set; }
     }
 
-
+    public class TestUser : BaseEntity
+    {
+        public int TestId { get; set; }
+        public string ApplicationUserId { get; set; }
+    }
 }

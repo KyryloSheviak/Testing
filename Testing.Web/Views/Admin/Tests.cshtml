@@ -36,13 +36,13 @@
             @Html.DisplayFor(modelItem => item.Сomplexity.Complication)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.TimeToGo)
+            @Html.DisplayFor(modelItem => item.TimeToGo) (мин)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.CountQuestions)
         </td>
         <td>
-            @Html.ActionLink("Редактировать", "Edit", new { id = item.Id }, new { @class = "btn btn-info" })
+            @Html.ActionLink("Редактировать", "EditTestInfo", new { id = item.Id }, new { @class = "btn btn-info" })
             @Html.ActionLink("Удалить", "DeleteTest", new { id = item.Id }, new { @class = "btn btn-danger" })
         </td>
     </tr>

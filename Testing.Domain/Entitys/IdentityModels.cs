@@ -17,12 +17,12 @@ namespace Testing.Domain.Entitys
         [DefaultValue(false)]
         public bool isDelete { get; set; }
 
-        public ICollection<Test> Tests { get; set; }
+        //public ICollection<Test> Tests { get; set; }
 
-        public ApplicationUser()
-        {
-           Tests = new List<Test>();
-        }
+        //public ApplicationUser()
+        //{
+        //   Tests = new List<Test>();
+        //}
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
@@ -40,6 +40,7 @@ namespace Testing.Domain.Entitys
         public IDbSet<Question> Questions { get; set; }
         public IDbSet<Answer> Answers { get; set; }
         public IDbSet<AnswersUsers> AnswersUsers { get; set; }
+        public IDbSet<TestUser> TestUsers { get; set; }
 
         public ApplicationDbContext() : base("DefaultConnection", throwIfV1Schema: false) { }
 
@@ -47,6 +48,5 @@ namespace Testing.Domain.Entitys
         {
             return new ApplicationDbContext();
         }
-
     }
 }

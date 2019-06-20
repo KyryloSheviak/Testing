@@ -86,7 +86,7 @@ namespace Testing.Web.Controllers
             if (ModelState.IsValid)
             {
                 context.Tests.Add(test);
-                var i = context.SaveChanges();
+                context.SaveChanges();
                 return RedirectToAction("AddInformation/" + test.Id);
             }
 
@@ -99,9 +99,11 @@ namespace Testing.Web.Controllers
             return View(context.Tests.Find(id));
         }
 
+        // добавления вопросв по тесту
         [HttpPost]
-        public void AddQuestion(string name, string idtest, List<string> answers, List<string> ans)
+        public string AddQuestion(string name, string idtest, List<string> answers, List<string> ans)
         {
+            int testID = Convert.ToInt32(idtest);
             var obj = new Question
             {
                 TestId = Convert.ToInt32(idtest),
@@ -125,7 +127,45 @@ namespace Testing.Web.Controllers
 
             Answers.ForEach(t => context.Answers.Add(t));
             context.SaveChanges();
+
+            var countQuestions = context.Tests.Find(testID).Questions.Count();
+            context.Tests.Find(testID).CountQuestions = countQuestions;
+            context.SaveChanges();
+            return countQuestions.ToString();
         }
-        
+
+        // отображения view с изменение информации о тесте
+        [HttpGet]
+        public ActionResult EditTestInfo(int? id)
+        {
+            if(id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var t = context.Tests.Find(id);
+            if(t == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            ViewBag.СomplexityId = new SelectList(
+                context.Сomplexitys, 
+                "Id", 
+                "Complication",
+                selectedValue: t.СomplexityId);
+
+            return View(t);
+        }
+
+        // сохранение информации о тесте
+        [HttpPost]
+        public ActionResult EditTestInfo(Test test)
+        {
+            context.Tests.Find(test.Id).Subject = test.Subject;
+            context.Tests.Find(test.Id).TimeToGo = test.TimeToGo;
+            context.Tests.Find(test.Id).СomplexityId = test.СomplexityId;
+            context.SaveChanges();
+
+            return RedirectToAction("Tests");
+        }
+
+
     }
 }
