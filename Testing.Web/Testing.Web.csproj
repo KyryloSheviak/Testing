@@ -157,7 +157,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\_TestsViewModel.cs" />
+    <Compile Include="Models\ControlSubject.cs" />
+    <Compile Include="Models\TestsUser.cs" />
+    <Compile Include="Models\TestsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -218,7 +220,6 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Home\Details.cshtml" />
     <Content Include="Views\Home\Test.cshtml" />
     <Content Include="Views\Shared\_MenuAdmin.cshtml" />
     <Content Include="Views\Shared\_MenuUser.cshtml" />
@@ -233,6 +234,7 @@
     <Content Include="Views\Shared\_QuestionPartial.cshtml" />
     <Content Include="Views\Shared\_Result.cshtml" />
     <Content Include="Views\User\BlockUser.cshtml" />
+    <Content Include="Views\User\Results.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Testing.Domain.Entitys;
 using System.Data.Entity;
+using System;
 
 namespace Testing.Web.Controllers
 {
@@ -54,7 +55,8 @@ namespace Testing.Web.Controllers
             context.TestUsers.Add(new TestUser
             {
                 TestId = (int)id,
-                ApplicationUserId = User.Identity.Name
+                ApplicationUserId = User.Identity.Name,
+                Date = DateTime.Now
             });
             context.SaveChanges();
 
@@ -127,6 +129,14 @@ namespace Testing.Web.Controllers
                     .Where(a => a.IsCorrect == true && y.Any(e => e == a.Id))
                     .Count();
 
+                // запись соотношения правильных ответов
+                double t = (h * 100) / correctAns;
+                context.TestUsers
+                    .First(u => u.ApplicationUserId == User.Identity.Name && u.TestId == idtest)
+                    .PercentTrueAns = t;
+
+                context.SaveChanges();
+
                 ViewBag.YourAns = h;
                 ViewBag.CorrectAns = correctAns;
                 return PartialView("_Result");
@@ -148,6 +158,26 @@ namespace Testing.Web.Controllers
             };
 
             return PartialView("_QuestionPartial", Question);
+        }
+
+        // результаты по тестам
+        public ActionResult Results()
+        {
+            var res = context
+            .TestUsers
+            .Join(
+                context.Tests,
+                p => p.TestId,
+                t => t.Id,
+                (p, t) => new Testing.Web.Models.TestsUser
+                {
+                    TestName = t.Subject,
+                    PercentTrueAns = p.PercentTrueAns,
+                    Date = p.Date
+                }
+            );
+
+            return View(res);
         }
     }
 }

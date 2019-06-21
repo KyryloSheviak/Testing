@@ -20,72 +20,71 @@ namespace Testing.Web.Controllers
             ApplicationDbContext context = new ApplicationDbContext();
             var r = context.Tests; //.Where(p => p.Subject == "Математика");
 
-            List<Сomplexity> compModels =
+            List<string> compModels =
                 context
-                .Сomplexitys
-                // .OrderBy(o => o.Complication)
+                .Tests
+                .Select(x => x.Subject)
                 .Distinct()
                 .ToList();
-            compModels.Insert(0, new Сomplexity { Id = 0, Complication = "Все..." });
+            compModels.Insert(0, "Все...");
 
-            /*
-            // формируем список компаний для передачи в представление
-            List<Сomplexity> compModels = 
-                context
-                .Сomplexitys
-                .Select(c => new Сomplexity { Id = c.Id, Complication = c.Complication })
-                .ToList();
-            // добавляем на первое место
-            */
-            _TestsViewModel ivm = new _TestsViewModel
+            TestsViewModel ivm = new TestsViewModel
             {
-                Сomplexity = compModels, Test = r
+                Subject = compModels, Test = r
             };
 
             return View(ivm);
         }
-
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-                return HttpNotFound();
-
-            ApplicationDbContext context = new ApplicationDbContext();
-            var c = context.Questions.Where(o => o.TestId == id);
-            return View(c);
-        }
+        
 
         [HttpPost]
-        public ActionResult Submit(FormCollection formcollection)
+        public ActionResult Submit(string subject)
         {
-            string sub = formcollection["Subject"];
-            TempData["Message"] = sub;
             ApplicationDbContext context = new ApplicationDbContext();
-            var c = context.Tests.Where(cc => cc.Subject == sub);
+            /*
+            if (subject == "Все...")
+                var c = context.Tests.Where(cc => !cc.isDelete);
+            else
+                var t = context.Tests.Where(cc => !cc.isDelete && cc.Subject == subject);
+            
+        // предметы
+        SelectList subject = new SelectList(
+            context
+            .Tests
+             //.OrderBy(o => o.Subject)
+            .Select(p => p.Subject)
+            .Distinct()
+            .ToList()
+        );
+        ViewBag.Subject = subject;
 
-            // предметы
-            SelectList subject = new SelectList(
+        // сложность
+        SelectList complexity = new SelectList(
+            context
+            .Сomplexitys
+           // .OrderBy(o => o.Complication)
+            .Select(p => p.Complication)
+            .Distinct()
+            .ToList()
+        );
+        ViewBag.Сomplexity = complexity;
+        */
+
+            List<string> compModels =
                 context
                 .Tests
-                 //.OrderBy(o => o.Subject)
-                .Select(p => p.Subject)
+                .Select(x => x.Subject)
                 .Distinct()
-                .ToList()
-            );
-            ViewBag.Subject = subject;
+                .ToList();
+            compModels.Insert(0, "Все...");
 
-            // сложность
-            SelectList complexity = new SelectList(
-                context
-                .Сomplexitys
-               // .OrderBy(o => o.Complication)
-                .Select(p => p.Complication)
-                .Distinct()
-                .ToList()
-            );
-            ViewBag.Сomplexity = complexity;
+            TestsViewModel ivm = new TestsViewModel
+            {
+                Subject = compModels,
+                Test = null
+            };
 
-            return View("Test", c);
+            return View("Test", ivm);
         }
     }
 }

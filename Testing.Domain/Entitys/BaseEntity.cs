@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -70,5 +71,10 @@ namespace Testing.Domain.Entitys
     {
         public int TestId { get; set; }
         public string ApplicationUserId { get; set; }
+        [Display(Name = "Результат")]
+        public double PercentTrueAns { get; set; }
+        [Display(Name = "Дата прохождения")]
+        public DateTime Date { get; set; }
+
     }
 }

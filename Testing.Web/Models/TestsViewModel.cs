@@ -6,9 +6,9 @@ using Testing.Domain.Entitys;
 
 namespace Testing.Web.Models
 {
-    public class _TestsViewModel
+    public class TestsViewModel
     {
-        public IEnumerable<Сomplexity> Сomplexity { get; set; }
+        public IEnumerable<string> Subject { get; set; }
         public IEnumerable<Test> Test { get; set; }
     }
 }

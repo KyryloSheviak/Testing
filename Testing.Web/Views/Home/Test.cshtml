@@ -89,12 +89,13 @@
 @{
     ViewData["Title"] = "Home Page";
 }
+
 <form class="form-inline">
     <label>Выберите предмет:</label>
-    <select name="subjectId" class="form-control">
-        @foreach (Testing.Domain.Entitys.Сomplexity comp in Model.Сomplexity)
+    <select name="subject" class="form-control">
+        @foreach (var comp in Model.Subject)
         {
-            <option value="@comp.Id">@comp.Complication</option>
+            <option value="@comp">@comp</option>
         }
     </select>
     <input type="submit" />

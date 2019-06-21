@@ -81,8 +81,8 @@
 
 @section Scripts {
     <script>
+        var i = 0;
         $(function () {
-            var i = 0;
             $('#addLink').on("click", function () {
                 i++;
                 var html2Add =
@@ -119,6 +119,7 @@
                 <br />
                 <input id="test" type="submit" value="Добавить вопрос" class="btn btn-primary" />
                 <input type="text" name="idtest" value="@Model.Id" hidden />`);
+            i = 0;
         }
     </script>
 }

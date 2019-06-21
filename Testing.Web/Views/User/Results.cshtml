@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Testing.Web.Models.TestsUser>
+
+@{
+    ViewBag.Title = "Результаты";
+}
+
+<h2>Результаты</h2>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.TestName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PercentTrueAns)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.TestName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PercentTrueAns) %
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Date)
+        </td>
+    </tr>
+}
+
+</table>
