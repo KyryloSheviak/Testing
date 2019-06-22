@@ -41,6 +41,7 @@ namespace Testing.Domain.Entitys
                 new Сomplexity { Complication = "повышенный" },
                 new Сomplexity { Complication = "высокий" }
             };
+
             complexity.ForEach(c => context.Сomplexitys.Add(c));
             context.SaveChanges();
 

@@ -1,18 +1,19 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using Testing.Domain.Entitys;
+using Testing.Domain.Interface;
 
 namespace Testing.Web.Controllers
 {
     [Authorize(Roles="admin")]
     public class AdminController : Controller
     {
-        private ApplicationDbContext context = new ApplicationDbContext();
+        private IRepositoryAdmin repository;
+        public AdminController(IRepositoryAdmin r)
+        {
+            repository = r;
+        }
 
         // GET: Admin
         public ActionResult Index()
@@ -23,7 +24,7 @@ namespace Testing.Web.Controllers
         // Get: получение всех юзеров
         public ActionResult Users()
         {
-            var c = context.Users.Where(u => !u.isDelete);
+            var c = repository.GetUsers();
             return View(c);
         }
 
@@ -34,10 +35,8 @@ namespace Testing.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var t = context.Users.Find(id).isBlock;
-            context.Users.Find(id).isBlock = !t;
-            context.SaveChanges();
-            return View("Users", context.Users.Where(u => !u.isDelete));
+            repository.BlockUser(id);
+            return View("Users", repository.GetUsers());
         }
 
         // удаление юзера
@@ -47,15 +46,14 @@ namespace Testing.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            context.Users.Find(id).isDelete = true;
-            context.SaveChanges();
-            return View("Users", context.Users.Where(u => !u.isDelete));
+            repository.DeleteUser(id);
+            return View("Users", repository.GetUsers());
         }
 
         // получения списка тестов
         public ActionResult Tests()
         {
-            return View(context.Tests.Where(t => !t.isDelete));
+            return View(repository.GetTests());
         }
 
         // soft удаления теста
@@ -66,15 +64,14 @@ namespace Testing.Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            context.Tests.Find(id).isDelete = true;
-            context.SaveChanges();
-            return View("Tests", context.Tests.Where(t => !t.isDelete));
+            repository.DeleteTest(id);
+            return View("Tests", repository.GetTests());
         }
 
         [HttpGet]
         public ActionResult Create()
         {
-            ViewBag.СomplexityId = new SelectList(context.Сomplexitys, "Id", "Complication");
+            ViewBag.СomplexityId = new SelectList(repository.GetСomplexity(), "Id", "Complication");
             return View();
         }
 
@@ -85,53 +82,24 @@ namespace Testing.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                context.Tests.Add(test);
-                context.SaveChanges();
+                repository.AddTest(test);
                 return RedirectToAction("AddInformation/" + test.Id);
             }
-
-            ViewBag.СomplexityId = new SelectList(context.Сomplexitys, "Id", "Complication", test.СomplexityId);
+            ViewBag.СomplexityId = new SelectList(repository.GetСomplexity(), "Id", "Complication", test.СomplexityId);
             return View(test);
         }
 
         public ActionResult AddInformation(int? id)
         {
-            return View(context.Tests.Find(id));
+            return View(repository.GetTest(id));
         }
 
         // добавления вопросв по тесту
         [HttpPost]
         public string AddQuestion(string name, string idtest, List<string> answers, List<string> ans)
         {
-            int testID = Convert.ToInt32(idtest);
-            var obj = new Question
-            {
-                TestId = Convert.ToInt32(idtest),
-                UserQuestion = name
-            };
-            context.Questions.Add(obj);
-            context.SaveChanges();
-
-            int id = obj.Id;
-
-            var Answers = new List<Answer>();
-            for (int i = 0; i < answers.Count; i++)
-            {
-                Answers.Add(new Answer
-                {
-                    QuestionId = id,
-                    UserAnswer = answers[i].ToString(),
-                    IsCorrect = ans[i] == "1" ? true : false
-                });
-            }
-
-            Answers.ForEach(t => context.Answers.Add(t));
-            context.SaveChanges();
-
-            var countQuestions = context.Tests.Find(testID).Questions.Count();
-            context.Tests.Find(testID).CountQuestions = countQuestions;
-            context.SaveChanges();
-            return countQuestions.ToString();
+            var result = repository.AddQuestion(name, idtest, answers, ans);
+            return result.ToString();
         }
 
         // отображения view с изменение информации о тесте
@@ -141,12 +109,12 @@ namespace Testing.Web.Controllers
             if(id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var t = context.Tests.Find(id);
+            var t = repository.GetTest(id);
             if(t == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             ViewBag.СomplexityId = new SelectList(
-                context.Сomplexitys, 
+                repository.GetСomplexity(),
                 "Id", 
                 "Complication",
                 selectedValue: t.СomplexityId);
@@ -158,14 +126,8 @@ namespace Testing.Web.Controllers
         [HttpPost]
         public ActionResult EditTestInfo(Test test)
         {
-            context.Tests.Find(test.Id).Subject = test.Subject;
-            context.Tests.Find(test.Id).TimeToGo = test.TimeToGo;
-            context.Tests.Find(test.Id).СomplexityId = test.СomplexityId;
-            context.SaveChanges();
-
+            repository.EditTestInformation(test);
             return RedirectToAction("Tests");
         }
-
-
     }
 }

@@ -77,4 +77,5 @@ namespace Testing.Domain.Entitys
         public DateTime Date { get; set; }
 
     }
+
 }
