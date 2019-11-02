@@ -78,48 +78,10 @@
 
 @Scripts.Render("~/scripts/jquery-3.3.1.min.js")
 @Scripts.Render("~/scripts/jquery.unobtrusive-ajax.min.js")
+@Scripts.Render("~/scripts/script.js")
 
 @section Scripts {
     <script>
-        var i = 0;
-        $(function () {
-            $('#addLink').on("click", function () {
-                i++;
-                var html2Add =
-                    "<div class='answerItem'>" +
-                    "<h5>Ответ № " + (i + 1) + "</h5>" +
-                    "<div>" +
-                    "<input type='text' name='answers' id='answers' class='form-control text-box single-line' required />" +
-                    "<input type='checkbox' onClick='document.getElementById('ans_" + i + "').value = this.checked ? 1 : 0;'> Правильный?" +
-                    "<input type='hidden' name='ans' id='ans_" + i + "' value='0'>" +
-                "</div> " +
-                    "</div>";
-                $('#answersBlock').append(html2Add);
-            })
-        });
 
-        function OnSuccess() {
-            alert("Записи в БД были добавлены!");
-            $('#form0').empty();
-            $("#form0").html(`
-                <div class="QuestionBlock">
-                    <label>Вопрос</label>
-                    <input type="text" name="name" class="form-control text-box single-line" required />
-                </div>
-                <div id="answersBlock">
-                    <div class="answerItem">
-                        <h5>Ответ № 1</h5>
-                        <div>
-                            <input type="text" name="answers" id="answers" class="form-control text-box single-line" required />
-                            <input type="checkbox" onClick="document.getElementById('ans_1').value = this.checked ? 1 : 0;"> Правильный?
-                            <input type="hidden" name="ans" id="ans_1" value="0">
-                        </div>
-                    </div>
-                </div>
-                <br />
-                <input id="test" type="submit" value="Добавить вопрос" class="btn btn-primary" />
-                <input type="text" name="idtest" value="@Model.Id" hidden />`);
-            i = 0;
-        }
     </script>
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Testing.Domain.Entitys;
+using Testing.Domain.Models;
 
 namespace Testing.Domain.Interface
 {
@@ -18,7 +19,7 @@ namespace Testing.Domain.Interface
         /// </summary>
         /// <param name="userName">Имя юзера в система (email)</param>
         /// <returns>Коллекция вопросов</returns>
-        IQueryable<Test> GetTestForUser(string userName);
+        TestsViewModel GetTestForUser(string userName, string subject, string level);
 
         /// <summary>
         /// Метод выполняющий возврат первого вопроса и устанавливающий 
@@ -67,5 +68,17 @@ namespace Testing.Domain.Interface
         /// <param name="userName">Имя юзера в система (email)</param>
         /// <returns></returns>
         IQueryable<TestResults> AllResults(string userName);
+
+        /// <summary>
+        /// Получение кол-ва доступных тестов для юзера
+        /// </summary>
+        /// <param name="userName">Имя юзера в система (email)</param>
+        /// <returns></returns>
+        int CountTests(string userName);
+
+        TestsViewModel FirstOpenPage(string userName);
+
+
+        bool Test(int? id, string userName);
     }
 }

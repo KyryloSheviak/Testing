@@ -187,7 +187,6 @@
     </Compile>
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Models\ControlSubject.cs" />
-    <Compile Include="Models\TestsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -196,6 +195,10 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Pic\avatar.png" />
+    <Content Include="Pic\results.png" />
+    <Content Include="Pic\test.png" />
+    <Content Include="Scripts\script.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\Site.css" />
@@ -234,7 +237,7 @@
     <Content Include="Views\Account\SendCode.cshtml" />
     <Content Include="Views\Account\VerifyCode.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\User\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
     <Content Include="Views\Manage\ChangePassword.cshtml" />
@@ -263,6 +266,9 @@
     <Content Include="Views\Shared\_Result.cshtml" />
     <Content Include="Views\User\BlockUser.cshtml" />
     <Content Include="Views\User\Results.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\Home\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

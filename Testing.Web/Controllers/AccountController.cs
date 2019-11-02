@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
@@ -79,10 +80,22 @@ namespace Testing.Web.Controllers
             // Сбои при входе не приводят к блокированию учетной записи
             // Чтобы ошибки при вводе пароля инициировали блокирование учетной записи, замените на shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: true);
+            var user = await UserManager.FindAsync(model.Email, model.Password);
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    if (UserManager.IsInRole(user.Id, "user") && !user.isDelete)
+                    {
+                        return RedirectToAction("Index", "User");
+                    }
+
+                    if (UserManager.IsInRole(user.Id, "admin"))
+                    {
+                        return RedirectToAction("Index", "Admin");
+                    }
+                    LogOff();
+                    return RedirectToAction("Error", "Home");
+
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:

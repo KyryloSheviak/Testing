@@ -13,17 +13,29 @@ namespace Testing.Web.Controllers
             repository = r;
         }
 
+        public ActionResult Index()
+        {
+            ViewBag.CountTests = repository.CountTests(User.Identity.Name);
+            return View();
+        }
+
         // получения списка тестов
         public ActionResult Tests()
         {
             if(repository.IsBlockUser(User.Identity.Name))
                 return View("BlockUser");
 
-            return View(repository.GetTestForUser(User.Identity.Name));
+            return View(repository.FirstOpenPage(User.Identity.Name));
         }
 
         public ActionResult Start(int? id)
         {
+            var b = repository.Test(id, User.Identity.Name);
+            if (b)
+            {
+                return RedirectToAction("Tests");
+            }
+
             var result = repository.StartTest(id, User.Identity.Name);
             ViewBag.Time = result.time;
             // название теста
@@ -64,6 +76,23 @@ namespace Testing.Web.Controllers
             var result = repository.AllResults(User.Identity.Name);
 
             return View(result);
+        }
+
+        public ActionResult Contact()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult Submit()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Submit(string subject, string level)
+        {
+            return View("Tests", repository.GetTestForUser(User.Identity.Name, subject, level));
         }
     }
 }

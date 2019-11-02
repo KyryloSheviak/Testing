@@ -50,7 +50,7 @@
                 "Удалить",
                 "Delete",
                 new { id = item.Id },
-                new { @class = "btn btn-danger" })
+                new { onclick = "return confirm('Вы уверены, что хотите удалить?')" })
         </td>
     </tr>
 }

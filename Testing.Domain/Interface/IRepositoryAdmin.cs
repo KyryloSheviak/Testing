@@ -29,7 +29,7 @@ namespace Testing.Domain.Interface
         /// Получение не удаленных тестов
         /// </summary>
         /// <returns></returns>
-        IQueryable<Test> GetTests();
+        IEnumerable<Test> GetTests();
 
         /// <summary>
         /// Soft delete теста
@@ -72,5 +72,16 @@ namespace Testing.Domain.Interface
         /// <returns></returns>
         int AddQuestion(string name, string idtest, List<string> answers, List<string> ans);
 
+        /// <summary>
+        /// Получение кол-ва тестов
+        /// </summary>
+        /// <returns></returns>
+        int CountTests();
+
+        /// <summary>
+        /// Получения кол-ва юзеров
+        /// </summary>
+        /// <returns></returns>
+        int CountUsers();
     }
 }

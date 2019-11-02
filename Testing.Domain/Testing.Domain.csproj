@@ -104,6 +104,7 @@
     <Compile Include="Entitys\IdentityModels.cs" />
     <Compile Include="Entitys\ManageViewModels.cs" />
     <Compile Include="Entitys\TestResults.cs" />
+    <Compile Include="Entitys\TestsViewModel.cs" />
     <Compile Include="Interface\IRepositoryAdmin.cs" />
     <Compile Include="Interface\IRepositoryUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

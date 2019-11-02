@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Testing.Domain.Entitys;
 using Testing.Domain.Interface;
+using Testing.Domain.Models;
 
 namespace Testing.Domain.Repository
 {
@@ -15,7 +16,7 @@ namespace Testing.Domain.Repository
             return context.Users.First(u => u.UserName == userName).isBlock;
         }
 
-        public IQueryable<Test> GetTestForUser(string userName)
+        public TestsViewModel FirstOpenPage(string userName)
         {
             // получаем все тесты пройденные юзером
             var late = context
@@ -30,7 +31,96 @@ namespace Testing.Domain.Repository
                 .Tests
                 .Where(a => !a.isDelete && !late.Any(e => e == a.Id));
 
-            return tests;
+            List<string> compModels = context
+                .Tests
+                .Select(x => x.Subject)
+                .Distinct()
+                .ToList();
+            compModels.Insert(0, "Все...");
+
+            List<string> level = context
+                .Сomplexitys
+                .Select(x => x.Complication)
+                .Distinct()
+                .ToList();
+            level.Insert(0, "Все...");
+
+            TestsViewModel ivm = new TestsViewModel
+            {
+                Subject = compModels,
+                Level = level,
+                Test = tests
+            };
+
+            return ivm;
+        }
+
+        public TestsViewModel GetTestForUser(string userName, string subject, string level)
+        {
+            List<string> compModels = context
+                .Tests
+                .Select(x => x.Subject)
+                .Distinct()
+                .ToList();
+            compModels.Insert(0, "Все...");
+
+            List<string> levelList = context
+                .Сomplexitys
+                .Select(x => x.Complication)
+                .Distinct()
+                .ToList();
+            levelList.Insert(0, "Все...");
+            
+            // получаем все тесты пройденные юзером
+            var late = context
+                .TestUsers
+                .Where(x => x.ApplicationUserId == userName)
+                .Select(s => s.TestId)
+                .Distinct()
+                .ToList();
+            /*
+            // возвращаем только те тесты которые пользователь не прощел
+            var tests = context
+                .Tests
+                .Where(a => !a.isDelete && !late.Any(e => e == a.Id));
+
+            return null;//tests;
+            */
+            IEnumerable<Test> test = null;
+            if (subject == "Все..." && level == "Все...")
+                test = context.Tests
+                    .Where(a => !a.isDelete && !late.Any(e => e == a.Id)); ;
+
+            if (subject != "Все..." && level == "Все...")
+            {
+                test = context.Tests
+                    .Where(t => t.Subject == subject)
+                    .Where(a => !a.isDelete && !late.Any(e => e == a.Id)); ;
+            }
+
+            if (subject != "Все..." && level != "Все...")
+            {
+                test = context.Tests
+                    .Where(t => t.Subject == subject && t.Сomplexity.Complication == level)
+                    .Where(a => !a.isDelete && !late.Any(e => e == a.Id)); ;
+            }
+
+            if (subject == "Все..." && level != "Все...")
+            {
+                test = context.Tests
+                    .Where(t => t.Сomplexity.Complication == level)
+                    .Where(a => !a.isDelete && !late.Any(e => e == a.Id)); ;
+            }
+
+            TestsViewModel ivm = new TestsViewModel
+            {
+                Subject = compModels,
+                Level = levelList,
+                Test = test
+            };
+
+            return ivm;
+
         }
 
         public (int time, string subject, int countQuestions, Question question) StartTest(int? id, string userName)
@@ -131,8 +221,8 @@ namespace Testing.Domain.Repository
             context.TestUsers
                 .First(u => u.ApplicationUserId == userName && u.TestId == idtest)
                 .PercentTrueAns = t;
-
             context.SaveChanges();
+
             return t;
         }
 
@@ -154,6 +244,49 @@ namespace Testing.Domain.Repository
             );
 
             return res;
+        }
+
+        public int CountTests(string userName)
+        {
+            if (!IsBlockUser(userName))
+            {
+                // получаем все тесты пройденные юзером
+                var late = context
+                    .TestUsers
+                    .Where(x => x.ApplicationUserId == userName)
+                    .Select(s => s.TestId)
+                    .Distinct()
+                    .ToList();
+
+                return context
+                .Tests
+                .Where(a => !a.isDelete && !late.Any(e => e == a.Id)).Count();
+                //return context.Tests.Where(t => !t.isDelete).Count();
+            }
+            else return 0;
+        }
+
+        // ====
+
+        public bool Test(int? id, string userName)
+        {
+            // получаем все тесты пройденные юзером
+            var late = context
+                .TestUsers
+                .Where(x => x.ApplicationUserId == userName)
+                .Select(s => s.TestId)
+                .Distinct()
+                .ToList();
+
+            foreach (var item in late)
+            {
+                if (item == (int)id)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

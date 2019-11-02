@@ -43,7 +43,14 @@
         </td>
         <td>
             @Html.ActionLink("Редактировать", "EditTestInfo", new { id = item.Id }, new { @class = "btn btn-info" })
-            @Html.ActionLink("Удалить", "DeleteTest", new { id = item.Id }, new { @class = "btn btn-danger" })
+            
+            @Html.ActionLink(
+                "Delete",
+                "DeleteTest",
+                "Admin",
+                new { id = item.Id }, 
+                new { onclick = "return confirm('Вы уверены, что хотите удалить?')" }
+            )
         </td>
     </tr>
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Testing.Domain.Entitys
 {
@@ -12,9 +11,11 @@ namespace Testing.Domain.Entitys
 
     public class Test : BaseEntity
     {
+        [Required]
         [Display(Name = "Предмет")]
         public string Subject { get; set; } // предмет
 
+        [Required]
         [Display(Name = "Время на прохождение")]
         public int TimeToGo { get; set; } // время на прохождение
 
@@ -23,6 +24,7 @@ namespace Testing.Domain.Entitys
 
         public bool isDelete { get; set; }
 
+        [Required]
         [Display(Name = "Сложность")]
         public int СomplexityId { get; set; }
 

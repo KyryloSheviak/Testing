@@ -1,105 +1,40 @@
-﻿@*
-@model IEnumerable<Testing.Domain.Entitys.Test>
-@using Complexity = Testing.Domain.Entitys.Сomplexity
-
-@{
-    ViewBag.Title = "Test";
-
-}
-
-@using (Html.BeginForm("Submit", "Home", FormMethod.Post, new { @name = "Form1" }))
-{
-    @Html.DropDownList("Subject",
-        ViewBag.Subject as SelectList,
-        TempData["Message"] == null ? "Выберите предмет..." : "Выбранный предмет - " +  TempData["Message"].ToString(),
-        new { @class = "form-control", @id = "ddl" })
-    //@Html.DropDownList("Сomplexity", ViewBag.Сomplexity as SelectList, "Виберите уровень...", new { @class = "form-control", @id = "ddl" })
-}
-
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script type="text/javascript">
-    $("body").on("change", "#ddl", function () {
-        $("#ddlSub").val($(this).find("option:selected").text());
-        document.forms["Form1"].submit();
-    });
-</script>
-
-
-    @if (TempData["Message"] != null)
-    {
-        <script type="text/javascript">
-                $(function () {
-                    alert("@TempData["Message"]");
-                });
-        </script>
-    }
-
-
-<h2>Test</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Subject)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TimeToGo)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CountQuestions)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.СomplexityId)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Subject)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TimeToGo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CountQuestions)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.СomplexityId)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
-    }
-
-</table>
-*@
-
-
-@model Testing.Web.Models.TestsViewModel
+﻿
+@model Testing.Domain.Models.TestsViewModel
 
 @{
     ViewData["Title"] = "Home Page";
 }
 
-<form class="form-inline">
-    <label>Выберите предмет:</label>
-    <select name="subject" class="form-control">
-        @foreach (var comp in Model.Subject)
-        {
-            <option value="@comp">@comp</option>
-        }
-    </select>
-    <input type="submit" />
-</form>
+<h2>Тесты</h2>
+
+@using (Html.BeginForm("Submit", "Home", FormMethod.Post, new { @name = "Form1" }))
+{
+    <div class="col-md-6">
+        <label for="subject">Выберите предмет:</label>
+        <select name="subject" id="subject" class="form-control">
+            @foreach (var comp in Model.Subject)
+            {
+                <option value="@comp">@comp</option>
+            }
+        </select>
+    </div>
+
+    <div class="col-md-6">
+        <label for="level">Выберите предмет:</label>
+        <select name="level" id="level" class="form-control">
+            @foreach (var lev in Model.Level)
+            {
+                <option value="@lev">@lev</option>
+            }
+        </select>
+    </div>
+    
+    <div class="col-md-6">
+        <br />
+        <input type="submit" />
+    </div>
+    
+}
 
 <br />
 <table class="table">

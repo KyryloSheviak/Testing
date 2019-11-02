@@ -16,13 +16,6 @@ namespace Testing.Domain.Entitys
         [DefaultValue(false)]
         public bool isDelete { get; set; }
 
-        //public ICollection<Test> Tests { get; set; }
-
-        //public ApplicationUser()
-        //{
-        //   Tests = new List<Test>();
-        //}
-
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Обратите внимание, что authenticationType должен совпадать с типом, определенным в CookieAuthenticationOptions.AuthenticationType

@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "Панель администратора";
+}
+
+<div class="jumbotron">
+    <h1>Панель администратора</h1>
+    <p class="lead">С помощью этой панели вы можете управлять пользователями и тестами в системе</p>
+</div>
+<div class="row">
+    <div class="row">
+        <div class="col-md-6 text-center">
+            <img src="~/Pic/test.png" alt="тесты" />
+            <h2>Количество<br />тестов в системе: @ViewBag.CountTests</h2>
+            <a class="btn btn-default" href="~/Admin/Tests">К тестам &raquo;</a>
+        </div>
+        <div class="col-md-6 text-center">
+            <img src="~/Pic/avatar.png" alt="аватар пользователя" />
+            <h2>Количество<br />пользователей в системе: @ViewBag.CountUsers</h2>
+            <a class="btn btn-default" href="~/Admin/Users">К пользователям &raquo;</a>
+        </div>
+    </div>
+</div>

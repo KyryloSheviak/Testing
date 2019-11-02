@@ -1,47 +1,61 @@
-﻿@model IEnumerable<Testing.Domain.Entitys.Test>
-
-@{
-    ViewBag.Title = "Доступные тесты";
-}
+﻿@model Testing.Domain.Models.TestsViewModel
 
 <h2>Доступные тесты</h2>
 
-<table class="table">
+@using (Html.BeginForm("Submit", "User", FormMethod.Post, new { @name = "Form1" }))
+{
+    <div class="col-md-6">
+        <label for="subject">Выберите предмет:</label>
+        <select name="subject" id="subject" class="form-control">
+            @foreach (var comp in Model.Subject)
+            {
+                <option value="@comp">@comp</option>
+            }
+        </select>
+    </div>
+
+    <div class="col-md-6">
+        <label for="level">Выберите сложность:</label>
+        <select name="level" id="level" class="form-control">
+            @foreach (var lev in Model.Level)
+            {
+                <option value="@lev">@lev</option>
+            }
+        </select>
+    </div>
+
+    <div class="col-md-6">
+        <br />
+        <input type="submit" class="btn btn-secondary" />
+    </div>
+}
+
+<table class="table col-md-12">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Subject)
+            @Html.DisplayNameFor(model => model.Test.First().Subject)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Сomplexity.Complication)
+            @Html.DisplayNameFor(model => model.Test.First().TimeToGo)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.TimeToGo)
+            @Html.DisplayNameFor(model => model.Test.First().CountQuestions)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CountQuestions)
+            @Html.DisplayNameFor(model => model.Test.First().Сomplexity.Complication)
         </th>
         <th></th>
     </tr>
-
-    @foreach (var item in Model)
+    @foreach (Testing.Domain.Entitys.Test p in Model.Test)
     {
         <tr>
+            <td>@p.Subject</td>
+            <td>@p.TimeToGo</td>
+            <td>@p.CountQuestions</td>
+            <td>@p.Сomplexity.Complication</td>
             <td>
-                @Html.DisplayFor(modelItem => item.Subject)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Сomplexity.Complication)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TimeToGo) (мин)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CountQuestions)
-            </td>
-            <td>
-                @Html.ActionLink("Пройти тест", "Start", new { id = item.Id }, new { @class = "btn btn-success" })
+                @Html.ActionLink("Пройти тест", "Start", new { id = p.Id }, new { @class = "btn btn-success" })
             </td>
         </tr>
     }
-
 </table>

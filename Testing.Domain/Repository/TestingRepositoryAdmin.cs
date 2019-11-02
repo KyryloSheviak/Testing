@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -13,7 +14,10 @@ namespace Testing.Domain.Repository
 
         public IQueryable<ApplicationUser> GetUsers()
         {
-            return context.Users.Where(u => !u.isDelete);
+            string roleName = "user";
+            var role = context.Roles.SingleOrDefault(r => r.Name == roleName);
+            var users = context.Users.Where(u => u.Roles.Any(r => r.RoleId == role.Id));
+            return users;
         }
 
         public void BlockUser(string id)
@@ -29,9 +33,10 @@ namespace Testing.Domain.Repository
             context.SaveChanges();
         }
 
-        public IQueryable<Test> GetTests()
+        public IEnumerable<Test> GetTests()
         {
-            return context.Tests.Where(t => !t.isDelete);
+            var tt = context.Tests.Where(t => !t.isDelete).ToList();
+            return tt;
         }
 
         public Test GetTest(int? id)
@@ -96,6 +101,19 @@ namespace Testing.Domain.Repository
             context.SaveChanges();
 
             return countQuestions;
+        }
+
+        public int CountTests()
+        {
+            return context.Tests.Where(t => !t.isDelete).Count();
+        }
+
+        public int CountUsers()
+        {
+            string roleName = "user";
+            var role = context.Roles.Single(r => r.Name == roleName);
+            var users = context.Users.Where(u => !u.isDelete && u.Roles.Any(r => r.RoleId == role.Id)).Count();
+            return users;
         }
     }
 }

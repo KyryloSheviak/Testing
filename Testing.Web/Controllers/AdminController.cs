@@ -18,6 +18,8 @@ namespace Testing.Web.Controllers
         // GET: Admin
         public ActionResult Index()
         {
+            ViewBag.CountUsers = repository.CountUsers();
+            ViewBag.CountTests = repository.CountTests();
             return View();
         }
 

@@ -12,6 +12,14 @@
     <h4>&nbsp;(мин)</h4>
 </div>
 
+<div id="timer">
+    <div><i>Дней</i><span id="days"></span></div>
+    <div><i>Часов</i><span id="hours"></span></div>
+    <div><i>Минут</i><span id="minutes">2</span></div>
+    <div><i>Секунд</i><span id="seconds"></span></div>
+</div>
+
+
 @using (Ajax.BeginForm("AddUserAnswer", new AjaxOptions { UpdateTargetId = "results" }))
 {
     <div id="results">
@@ -21,17 +29,4 @@
 
 @Scripts.Render("~/scripts/jquery-3.3.1.min.js")
 @Scripts.Render("~/scripts/jquery.unobtrusive-ajax.min.js")
-
-<script type="text/javascript">
-    function countdown() {
-        seconds = document.getElementById("timerLabel").innerHTML;
-        if (seconds > 0) {
-            document.getElementById("timerLabel").innerHTML = seconds - 1;
-            setTimeout("countdown()", 1000 * 60);
-        } else {
-            alert("Время вышло!\nРезультаты сохранены.\nВы будете перенаправлены на страницу с тестами.");
-            window.location.replace("/User/Tests");
-        }
-    }
-    setTimeout("countdown()", 1000 * 60);
-</script>
+@Scripts.Render("~/scripts/script.js")

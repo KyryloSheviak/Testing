@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewBag.Title = "Добро пожаловать";
+}
+
+<div class="jumbotron">
+    <h1>Добро пожаловать, @User.Identity.Name!</h1>
+    <p class="lead">Здесь вы найдете все достпные тесты для Вас</p>
+</div>
+<div class="row">
+    <div class="row">
+        <div class="col-md-6 text-center">
+            <br />
+            <img src="~/Pic/test.png" alt="тесты" />
+            <h2>Количество доступных<br />тестов в системе: @ViewBag.CountTests</h2>
+            <a class="btn btn-default" href="~/User/Tests">К тестам &raquo;</a>
+        </div>
+        <div class="col-md-6 text-center">
+            <br />
+            <img src="~/Pic/results.png" alt="результаты" />
+            <h2>Ваши<br />результаты</h2>
+            <a class="btn btn-default" href="~/User/Results">К результатам &raquo;</a>
+        </div>
+    </div>
+</div>
